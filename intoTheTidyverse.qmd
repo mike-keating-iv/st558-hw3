@@ -47,9 +47,9 @@ The Portland Trailblazers are a National Basketball Association (NBA) sports tea
 Take a glimpse of the trailblazer data set to show that you have read in the data correctly.
 
 ```{r}
-trailblazer <- read_csv('data/trailblazer.csv')
+trailblazer <- read_csv('data/trailblazer.csv', show_col_types = FALSE)
 
-trailblazer
+glimpse(trailblazer)
 ```
 
 ### Part b
