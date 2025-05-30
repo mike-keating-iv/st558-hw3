@@ -1,0 +1,47 @@
+---
+title: "Into The Tidyverse"
+author: "Mike Keating"
+format: pdf
+editor: visual
+---
+
+## Load Dependencies
+
+```{r}
+library(tidyverse)
+library(palmerpenguins)
+```
+
+## Task 1
+
+The data for this task is called data.txt and data2.txt. Download these and put them in your data folder before answering the questions below.
+
+We can use read_csv functions to read in data. CSV is a comma-separated file i.e. any text file that uses commas as a delimiter to separate the record values for each field. Therefore, to load data from a text file we can use the read_csv() method (or versions of it), even if the file itself does not have a .csv extension.
+
+In the following question, we are going to read in txt data. Part a has us working with the data.txt file. Part b has you working with the data2.txt file.
+
+### Part a
+
+We cannot use read_csv() to read the data in data.txt because it uses a comma (',') as the delimiter (the separating character between values). Instead, we must use read_csv2(), which uses a semicolon (';') as its delimiter. This is helpful in reading data from European countries where a comma may be used as a decimal point and not as a field separator.
+
+```{r}
+data <- read_csv2('data/data.txt')
+data
+```
+
+### Part b
+
+Read data delimited by "6" and assign factor, double, and character as datatypes for each column.
+
+```{r}
+data2 <- read_delim('data/data2.txt', delim = '6', col_types = 'fdc')
+data2
+```
+
+## Task 2
+
+The Portland Trailblazers are a National Basketball Association (NBA) sports team. These data reflect the points scored by 9 Portland Trailblazers players across the first 10 games of the 2021-2022 NBA season. We are going to use these data to show off our data tidying skills. The data we will be using for this task is called trailblazer, and can be found on Moodle.
+
+## Task 3
+
+## Task 4
