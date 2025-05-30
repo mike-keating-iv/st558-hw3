@@ -7,7 +7,7 @@ editor: visual
 
 ## Load Dependencies
 
-```{r}
+```{r echo=FALSE}
 library(tidyverse)
 library(palmerpenguins)
 ```
@@ -41,6 +41,62 @@ data2
 ## Task 2
 
 The Portland Trailblazers are a National Basketball Association (NBA) sports team. These data reflect the points scored by 9 Portland Trailblazers players across the first 10 games of the 2021-2022 NBA season. We are going to use these data to show off our data tidying skills. The data we will be using for this task is called trailblazer, and can be found on Moodle.
+
+### Part a
+
+Take a glimpse of the trailblazer data set to show that you have read in the data correctly.
+
+```{r}
+trailblazer <- read_csv('data/trailblazer.csv')
+
+trailblazer
+```
+
+### Part b
+
+Pivot the data so that you have columns for Player, Game, Location, Points. Display the first five rows of your data set. Save your new data set as trailblazer_longer. Your data set should contain 90 rows and 4 columns.
+
+Let's get a glimpse at just the original column names:
+
+```{r}
+colnames(trailblazer)
+
+```
+
+```{r}
+trailblazer_longer <- trailblazer |> 
+  pivot_longer("Game1_Home":"Game10_Home", 
+               names_to = c("Game", "Location"), 
+               names_sep = "_", 
+               values_to = "Points")
+# Show first 5 rows
+print(head(trailblazer_longer, 5))
+# And checking dimensions
+print(dim(trailblazer_longer))
+```
+
+### Part c
+
+Which players scored more, on average, when playing at home versus away? Answer this question using a single pipeline
+
+```{r}
+home_scorers <- trailblazer_longer |> 
+  pivot_wider(names_from = "Location", values_from = "Points") |>
+  group_by(Player) |>
+  mutate(mean_home = mean(Home, na.rm = TRUE),
+         mean_away = mean(Away, na.rm = TRUE),
+         diff_home_away = mean_home - mean_away) |>
+  filter(diff_home_away > 0) |>
+  distinct(Player)
+  
+  
+```
+
+The following players scored more points on average at home than away:
+
+```{r}
+home_scorers
+```
 
 ## Task 3
 
