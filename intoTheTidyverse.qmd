@@ -167,3 +167,19 @@ penguins |>
 ```
 
 ## Task 4
+
+Fill in the missing values:
+
+```{r}
+# We will filter by na values first and then assign by species.
+# Missing value for Gentoo is 30
+# Missing value for Adelie is 26
+
+penguins |> select(species, island, bill_length_mm) |> 
+  filter(is.na(bill_length_mm)) |> 
+  mutate(bill_length_mm = case_when(species == "Adelie" ~ 26,
+            species == "Gentoo" ~ 30,
+            .default = NA))
+
+
+```
