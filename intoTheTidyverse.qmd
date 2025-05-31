@@ -87,7 +87,7 @@ home_scorers <- trailblazer_longer |>
          mean_away = mean(Away, na.rm = TRUE),
          diff_home_away = mean_home - mean_away) |>
   filter(diff_home_away > 0) |>
-  distinct(Player)
+  distinct(Player) # Distinct gives us unique values in our df
   
   
 ```
@@ -105,9 +105,63 @@ For the next tasks, we are going to use the penguins data set in the palmerpengu
 ### Problem a
 
 ```{r}
-head(penguins)
+# Provided erroneous code.
+penguins |>
+  select(species, island, bill_length_mm) |>
+  pivot_wider(
+    names_from = island, values_from = bill_length_mm
+  )
 ```
 
-There are instances where two species share a number of observations with the same bill size and cannot be uniquely identified from each other.
+```{r}
+
+```
+
+```{r}
+# Using the suggested code to identify duplicates
+penguins |> summarize(n = n(), .by=c(species,island)) |> filter(n > 1L)
+```
+
+There are instances where a combination of species and island can
+
+#### Explain what \<NULL\>, \<dbl \[52\]\>, and \<list\> mean:
+
+#### \<NULL\>
+
+In this case, \<NULL\> means that the given combination of species and island do not exist. For example, there are no penguins of the species "Chinstrap" on the island "Torgersen".
+
+We can check this by attempting to filter by these values:
+
+```{r}
+penguins |> select(species, island, bill_length_mm) |> filter(species == "Chinstrap", island == "Torgersen")
+```
+
+We returned a df with 0 rows (no results matching our criteria!) and 3 columns.
+
+#### \<dbl \[52\]\>
+
+Each observation for bill length where species is "Adelie" and island is "Torgersen" was combined into a single list of numbers (double).
+
+```{r}
+penguins |> select(species, island, bill_length_mm) |> filter(species == "Adelie", island == "Torgersen") |> str()
+```
+
+#### \<list\>
+
+As mentioned above, the column was converted to the list datatype.
+
+### Part b
+
+Create the table our colleague was trying to create:
+
+```{r}
+penguins |>
+  select(species, island, bill_length_mm) |> 
+  group_by(species, island) |> 
+  summarize(n = n()) |> 
+  pivot_wider(names_from = island, values_from = n, 
+              values_fill = 0) 
+#TODO look up how to cast int columns into double columns
+```
 
 ## Task 4
