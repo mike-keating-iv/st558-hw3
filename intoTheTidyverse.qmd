@@ -80,22 +80,24 @@ print(dim(trailblazer_longer))
 Which players scored more, on average, when playing at home versus away? Answer this question using a single pipeline
 
 ```{r}
-home_scorers <- trailblazer_longer |> 
+trailblazer_home_v_away <- 
+  trailblazer_longer |> 
   pivot_wider(names_from = "Location", values_from = "Points") |>
   group_by(Player) |>
   mutate(mean_home = mean(Home, na.rm = TRUE),
          mean_away = mean(Away, na.rm = TRUE),
          diff_home_away = mean_home - mean_away) |>
-  filter(diff_home_away > 0) |>
-  distinct(Player) # Distinct gives us unique values in our df
+  arrange(desc(diff_home_away))
   
-  
+trailblazer_home_v_away[8:11,]
 ```
 
 The following players scored more points on average at home than away:
 
 ```{r}
-home_scorers
+trailblazer_home_v_away |>
+  filter(diff_home_away > 0) |>
+  distinct(Player) # Distinct gives us unique values in our df
 ```
 
 ## Task 3				
