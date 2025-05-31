@@ -98,6 +98,16 @@ The following players scored more points on average at home than away:
 home_scorers
 ```
 
-## Task 3
+## Task 3				
+
+For the next tasks, we are going to use the penguins data set in the palmerpenguins package.
+
+### Problem a
+
+```{r}
+head(penguins)
+```
+
+There are instances where two species share a number of observations with the same bill size and cannot be uniquely identified from each other.
 
 ## Task 4
