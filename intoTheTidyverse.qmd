@@ -115,16 +115,12 @@ penguins |>
   )
 ```
 
-```{r}
-
-```
+This error occurs because each key (Island in this case) is associated with multiple values (bill_length_mm) and the function does not know which one to assign, so it stores all values in a list.
 
 ```{r}
 # Using the suggested code to identify duplicates
 penguins |> summarize(n = n(), .by=c(species,island)) |> filter(n > 1L)
 ```
-
-There are instances where a combination of species and island can
 
 #### Explain what \<NULL\>, \<dbl \[52\]\>, and \<list\> mean:
 
@@ -157,13 +153,16 @@ As mentioned above, the column was converted to the list datatype.
 Create the table our colleague was trying to create:
 
 ```{r}
+# We coerced the columns into the datatype double to match the given output.
 penguins |>
   select(species, island, bill_length_mm) |> 
   group_by(species, island) |> 
   summarize(n = n()) |> 
   pivot_wider(names_from = island, values_from = n, 
-              values_fill = 0) 
-#TODO look up how to cast int columns into double columns
+              values_fill = 0) |> mutate(Biscoe = as.double(Biscoe),
+                                         Dream = as.double(Dream),
+                                         Torgersen = as.double(Torgersen))
+
 ```
 
 ## Task 4
@@ -175,11 +174,10 @@ Fill in the missing values:
 # Missing value for Gentoo is 30
 # Missing value for Adelie is 26
 
-penguins |> select(species, island, bill_length_mm) |> 
-  filter(is.na(bill_length_mm)) |> 
-  mutate(bill_length_mm = case_when(species == "Adelie" ~ 26,
-            species == "Gentoo" ~ 30,
-            .default = NA))
-
-
+penguins_filled <- penguins |> select(species, island, bill_length_mm) |> 
+  mutate(bill_length_mm = case_when(species == "Adelie" & is.na(bill_length_mm) ~ 26,
+            species == "Gentoo" & is.na(bill_length_mm) ~ 30,
+            .default = bill_length_mm
+            ))
+head(penguins_filled, 10)
 ```
