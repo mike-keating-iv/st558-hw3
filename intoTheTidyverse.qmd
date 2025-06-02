@@ -131,7 +131,8 @@ In this case, \<NULL\> means that the given combination of species and island do
 We can check this by attempting to filter by these values:
 
 ```{r}
-penguins |> select(species, island, bill_length_mm) |> filter(species == "Chinstrap", island == "Torgersen")
+penguins |> select(species, island, bill_length_mm) |> 
+  filter(species == "Chinstrap", island == "Torgersen")
 ```
 
 We returned a df with 0 rows (no results matching our criteria!) and 3 columns.
@@ -141,7 +142,9 @@ We returned a df with 0 rows (no results matching our criteria!) and 3 columns.
 Each observation for bill length where species is "Adelie" and island is "Torgersen" was combined into a single list of numbers (double).
 
 ```{r}
-penguins |> select(species, island, bill_length_mm) |> filter(species == "Adelie", island == "Torgersen") |> str()
+penguins |> select(species, island, bill_length_mm) |> 
+  filter(species == "Adelie", island == "Torgersen") |> 
+  str()
 ```
 
 #### \<list\>
@@ -158,10 +161,12 @@ penguins |>
   select(species, island, bill_length_mm) |> 
   group_by(species, island) |> 
   summarize(n = n()) |> 
-  pivot_wider(names_from = island, values_from = n, 
-              values_fill = 0) |> mutate(Biscoe = as.double(Biscoe),
-                                         Dream = as.double(Dream),
-                                         Torgersen = as.double(Torgersen))
+  pivot_wider(names_from = island, 
+              values_from = n, 
+              values_fill = 0) |> 
+  mutate(Biscoe = as.double(Biscoe),
+         Dream = as.double(Dream),
+         Torgersen = as.double(Torgersen))
 
 ```
 
@@ -179,5 +184,6 @@ penguins_filled <- penguins |> select(species, island, bill_length_mm) |>
             species == "Gentoo" & is.na(bill_length_mm) ~ 30,
             .default = bill_length_mm
             ))
+# Show first 10 rows.
 head(penguins_filled, 10)
 ```
