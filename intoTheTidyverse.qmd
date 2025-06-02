@@ -7,8 +7,8 @@ editor: visual
 
 ## Load Dependencies
 
-```{r echo=FALSE}
-library(tidyverse)
+```{r results = 'hide', warning=FALSE}
+suppressMessages(library(tidyverse))
 library(palmerpenguins)
 ```
 
@@ -25,7 +25,7 @@ In the following question, we are going to read in txt data. Part a has us worki
 We cannot use read_csv() to read the data in data.txt because it uses a comma (',') as the delimiter (the separating character between values). Instead, we must use read_csv2(), which uses a semicolon (';') as its delimiter. This is helpful in reading data from European countries where a comma may be used as a decimal point and not as a field separator.
 
 ```{r}
-data <- read_csv2('data/data.txt')
+data <- read_csv2('data/data.txt', show_col_types = FALSE)
 data
 ```
 
@@ -100,7 +100,7 @@ trailblazer_home_v_away |>
   distinct(Player) # Distinct gives us unique values in our df
 ```
 
-## Task 3				
+## Task 3
 
 For the next tasks, we are going to use the penguins data set in the palmerpenguins package.
 
@@ -180,7 +180,8 @@ Fill in the missing values:
 # Missing value for Adelie is 26
 
 penguins_filled <- penguins |> select(species, island, bill_length_mm) |> 
-  mutate(bill_length_mm = case_when(species == "Adelie" & is.na(bill_length_mm) ~ 26,
+  mutate(bill_length_mm = case_when(species == "Adelie" & 
+                                      is.na(bill_length_mm) ~ 26,
             species == "Gentoo" & is.na(bill_length_mm) ~ 30,
             .default = bill_length_mm
             ))
